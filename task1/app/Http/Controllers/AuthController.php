@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,12 +16,9 @@ class AuthController extends Controller
       return view('auth/login');
    }
 
- public function login(Request $request)
+ public function login(LoginRequest $request)
  {
-   $credentials = $request->validate([
-      'email' => ['required', 'email'],
-      'password' => ['required'],
-  ]);
+   $credentials = $request->validated();
 
     if (Auth::attempt($credentials)) {
        $request->session()->regenerate();
@@ -39,15 +38,8 @@ class AuthController extends Controller
  }
 
 
- public function register(Request $request)
+ public function register(RegisterRequest $request)
  {
-      $request->validate([
-         'name' => ['required','string'],
-         'email' => ['required','email'],
-         'password' => ['required','confirmed'],
-
-       ]);
-
    $user = User::create([
          'name' => $request->name,
          'email' => $request->email,
@@ -57,7 +49,6 @@ class AuthController extends Controller
    auth()->login($user);
    if($user){
          return redirect()->route('home');
-
    }
  }
 
@@ -68,5 +59,5 @@ class AuthController extends Controller
    $request->session()->regenerateToken();
    return redirect()->route('login');
  }
- 
+
 }
