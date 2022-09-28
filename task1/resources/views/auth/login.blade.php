@@ -16,7 +16,7 @@
     <!-- Style -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
-    <title>Sign Up #7</title>
+    <title>Login</title>
   </head>
   <body>
   
